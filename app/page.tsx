@@ -66,21 +66,24 @@ export default function Home() {
     });
   };
 
-  const toggleRunning = () => {
+  const toggleRunning = useCallback(() => {
     if (!running) {
       setCursor(0);
       changeHandler("offset", (300 + Math.random() * 160) % 360);
     }
 
     setRunning(!running);
-  };
+  }, [running]);
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.code !== "KeyE") return;
-    event.preventDefault();
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.code !== "KeyE") return;
+      event.preventDefault();
 
-    toggleRunning();
-  }, []);
+      toggleRunning();
+    },
+    [toggleRunning],
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
