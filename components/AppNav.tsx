@@ -7,7 +7,12 @@ export default function AppNav() {
       <AppBar position="static">
         <Container disableGutters>
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1 }}
+              data-testid="AppNav-title"
+            >
               Supervive Vault Trainer
             </Typography>
             <Button
@@ -16,6 +21,7 @@ export default function AppNav() {
               aria-label="Open GitHub repository in new tab"
               startIcon={<GitHub />}
               endIcon={<OpenInNew />}
+              href="https://github.com/Ishou/supervive-vault-trainer"
             >
               GitHub
             </Button>
