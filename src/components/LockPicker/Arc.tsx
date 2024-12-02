@@ -21,10 +21,8 @@ export default function Arc(props: ArcProps) {
   return (
     <>
       <path
-        data-testid="Arc-path"
         {...props}
-        d={`M ${start.x} ${start.y}
-            A ${radius} ${radius} 0 ${flip} 1 ${end.x} ${end.y}`}
+        d={`M ${start.x} ${start.y} A ${radius} ${radius} 0 ${flip} 1 ${end.x} ${end.y}`}
         fill="none"
         strokeWidth={width}
       />
