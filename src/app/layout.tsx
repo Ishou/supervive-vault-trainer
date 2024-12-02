@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "@/app/theme";
 import { Container, Stack } from "@mui/material";
-import AppNav from "../components/AppNav";
+import AppNav from "@/components/AppNav";
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (

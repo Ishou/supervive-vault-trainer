@@ -34,9 +34,7 @@ const alertModels: Models = {
 export default function LockPickerAlert(props: { type: LockPickerResult }) {
   const model = alertModels[props.type];
 
-  return !model ? (
-    <></>
-  ) : (
+  return (
     <Alert color={model.color}>
       <AlertTitle>{model.title}</AlertTitle>
       {model.message}

@@ -1,10 +1,7 @@
-import { LockPickerProps } from "@/components/LockPicker/LockPicker";
 import { Box, Slider, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
-const optionKeys = ["speed", "size", "perfectSize"] as const;
-
-type OptionKey = (typeof optionKeys)[number];
+type OptionKey = "speed" | "size" | "perfectSize";
 type LockPickerOptionModel = {
   key: OptionKey;
   label: string;

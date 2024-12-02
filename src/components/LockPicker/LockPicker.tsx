@@ -3,9 +3,9 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LockPickerOptions } from "@/components/LockPicker/LockPickerOptionList";
 import { Button, Chip, Typography } from "@mui/material";
 import LockPickerAlert from "@/components/LockPickerAlert";
+import compareRange from "@/../utils/arc-compare";
 
-const types = ["perfect", "ok", "fail", "start"] as const;
-export type LockPickerResult = (typeof types)[number];
+export type LockPickerResult = "perfect" | "ok" | "fail" | "start";
 
 export interface LockPickerProps {
   options: LockPickerOptions;
@@ -61,14 +61,7 @@ export default function LockPicker(props: LockPickerProps) {
         const range = (offset: number, size: number) => {
           const start = offset % 360;
           const end = (offset + size) % 360;
-          if (start < 0 && end < 0) return [start + 360, end + 360, size];
-          return [start, end, size];
-        };
-        const compareRange = (r1: number[], r2: number[]) => {
-          const delta = -Math.max(r1[0], r2[0]);
-          r1 = range(r1[0] + delta, r1[2]);
-          r2 = range(r2[0] + delta, r2[2]);
-          return r1[0] <= r2[1] && r1[1] >= r2[0];
+          return [start, end];
         };
         const cursorRange = range(cursorOffset, cursorSize);
 
@@ -85,7 +78,15 @@ export default function LockPicker(props: LockPickerProps) {
       setCursor(0);
       setOffset((300 + Math.random() * 160) % 360);
     }
-  }, [running, result, cursor]);
+  }, [
+    result,
+    running,
+    cursorOffset,
+    perfectOffset,
+    perfectSize,
+    offset,
+    options.size,
+  ]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
