@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import "@/app/globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";

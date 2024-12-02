@@ -7,6 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "cypress:open": "cypress open",
+    "e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
+    "component": "cypress open --component",
+    "component:headless": "cypress run --component",
     "prepare": "husky"
   },
   "dependencies": {
@@ -17,16 +22,16 @@
     "@mui/icons-material": "^6.1.9",
     "@mui/material": "^6.1.9",
     "@mui/material-nextjs": "^6.1.9",
-    "@mui/x-charts": "^7.23.0",
-    "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "next": "^14.2.18",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8.57.1",
+    "cypress": "^13.16.0",
+    "eslint": "^9.16.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.7",
@@ -34,6 +39,7 @@
     "postcss": "^8",
     "prettier": "3.4.1",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "lint-staged": {

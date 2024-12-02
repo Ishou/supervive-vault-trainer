@@ -1,11 +1,11 @@
 import { SVGProps } from "react";
 
-type ArcProps = SVGProps<SVGPathElement> & {
+export interface ArcProps extends SVGProps<SVGPathElement> {
   offset?: number;
   angle: number;
   radius: number;
   width?: number;
-};
+}
 
 export default function Arc(props: ArcProps) {
   const { offset = 0, angle, radius, width = 10 } = props;
@@ -21,6 +21,7 @@ export default function Arc(props: ArcProps) {
   return (
     <>
       <path
+        data-testid="Arc-path"
         {...props}
         d={`M ${start.x} ${start.y}
             A ${radius} ${radius} 0 ${flip} 1 ${end.x} ${end.y}`}
