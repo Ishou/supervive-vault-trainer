@@ -1,12 +1,13 @@
-import { Box, Slider, Typography } from "@mui/material";
 import React from "react";
+import { Slider, SliderValue } from "@nextui-org/react";
 
 type OptionKey = "speed" | "size" | "perfectSize";
 type LockPickerOptionModel = {
   key: OptionKey;
   label: string;
-  format: (val: number) => string;
+  format: (val: SliderValue) => string;
   min: number;
+  default: number;
   max: number;
   value?: number;
   step?: number;
@@ -16,23 +17,26 @@ const optionModels: LockPickerOptionModel[] = [
   {
     key: "speed",
     label: "Speed",
-    format: (val) => `${val} RPS`,
+    format: (val) => `${val}RPS`,
     step: 0.05,
     min: 0.5,
+    default: 1.2,
     max: 2,
   },
   {
     key: "size",
     label: "Size",
-    format: (val) => `${val} °`,
+    format: (val) => `${val}°`,
     min: 5,
+    default: 12,
     max: 120,
   },
   {
     key: "perfectSize",
     label: "Perfect Size",
-    format: (val) => `${val} %`,
+    format: (val) => `${val}%`,
     min: 1,
+    default: 25,
     max: 100,
   },
 ];
@@ -50,28 +54,28 @@ export default function LockPickerOptionList(props: {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       {optionModels.map((model) => (
-        <Box key={model.key}>
-          <Typography>{model.label}: </Typography>
-          <Typography>{options[model.key]}</Typography>
-          <div className="mx-4">
-            <Slider
-              color="secondary"
-              value={options[model.key]}
-              valueLabelDisplay="auto"
-              min={model.min}
-              max={model.max}
-              step={model.step}
-              marks={[
-                { value: model.min, label: model.format(model.min) },
-                { value: model.max, label: model.format(model.max) },
-              ]}
-              onChange={(_, change) => optionsChange(model.key, +change)}
-            ></Slider>
-          </div>
-        </Box>
+        <div key={model.key}>
+          <Slider
+            label={model.label}
+            color="secondary"
+            value={options[model.key]}
+            getValue={model.format}
+            minValue={model.min}
+            maxValue={model.max}
+            step={model.step}
+            showSteps={!!model.step}
+            showTooltip
+            marks={[
+              { value: model.min, label: model.format(model.min) },
+              { value: model.default, label: model.format(model.default) },
+              { value: model.max, label: model.format(model.max) },
+            ]}
+            onChange={(change) => optionsChange(model.key, +change)}
+          ></Slider>
+        </div>
       ))}
-    </>
+    </div>
   );
 }

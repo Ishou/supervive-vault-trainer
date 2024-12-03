@@ -1,4 +1,3 @@
-import { Alert, AlertTitle } from "@mui/material";
 import { LockPickerResult } from "@/components/LockPicker/LockPicker";
 
 type Color = "success" | "error" | "info";
@@ -35,9 +34,18 @@ export default function LockPickerAlert(props: { type: LockPickerResult }) {
   const model = alertModels[props.type];
 
   return (
-    <Alert color={model.color}>
-      <AlertTitle>{model.title}</AlertTitle>
+    <div
+      className={
+        model.color === "success"
+          ? `p-2 rounded bg-success text-success-foreground`
+          : model.color === "error"
+            ? `p-2 rounded bg-danger text-danger-foreground`
+            : `p-2 rounded bg-primary text-primary-foreground`
+      }
+      role="alert"
+    >
+      <div className="font-bold">{model.title}</div>
       {model.message}
-    </Alert>
+    </div>
   );
 }

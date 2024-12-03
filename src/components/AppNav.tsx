@@ -1,33 +1,31 @@
-import { AppBar, Button, Container, Toolbar, Typography } from "@mui/material";
-import { GitHub, OpenInNew } from "@mui/icons-material";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Link,
+  Button,
+} from "@nextui-org/react";
 
 export default function AppNav() {
   return (
-    <div>
-      <AppBar position="static">
-        <Container disableGutters>
-          <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1 }}
-              data-testid="AppNav-title"
-            >
-              Supervive Vault Trainer
-            </Typography>
-            <Button
-              size="large"
-              color="inherit"
-              aria-label="Open GitHub repository in new tab"
-              startIcon={<GitHub />}
-              endIcon={<OpenInNew />}
-              href="https://github.com/Ishou/supervive-vault-trainer"
-            >
-              GitHub
-            </Button>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </div>
+    <Navbar isBordered>
+      <NavbarBrand>
+        <p className="font-bold text-inherit">Supervive Vault Trainer</p>
+      </NavbarBrand>
+      <NavbarContent justify="end">
+        <NavbarItem>
+          <Button
+            as={Link}
+            showAnchorIcon
+            href="https://github.com/Ishou/supervive-vault-trainer"
+            target="_blank"
+            variant="flat"
+          >
+            GitHub
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
   );
 }
