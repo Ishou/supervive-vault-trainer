@@ -66,7 +66,6 @@ export default function LockPickerOptionList(props: {
             maxValue={model.max}
             step={model.step}
             showSteps={!!model.step}
-            showTooltip
             marks={[
               { value: model.min, label: model.format(model.min) },
               { value: model.default, label: model.format(model.default) },

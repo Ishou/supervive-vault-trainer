@@ -14,6 +14,7 @@ import {
   Divider,
   Link,
 } from "@nextui-org/react";
+import { footer, header } from "framer-motion/m";
 
 export default function Home() {
   const [options, setOptions] = useState<LockPickerOptions>({
@@ -25,11 +26,12 @@ export default function Home() {
   return (
     <div className="grid p-4 col-span-6 md:col-start-2 md:col-span-4">
       <Card className="my-auto">
-        <CardHeader>
+        <CardHeader as={header}>
           <p className="text-lg">Supervive Vault Trainer</p>
           <div className="grow"></div>
           <Button
             as={Link}
+            role="link"
             showAnchorIcon
             href="https://github.com/Ishou/supervive-vault-trainer"
             target="_blank"
@@ -54,7 +56,10 @@ export default function Home() {
           </div>
         </CardBody>
         <Divider />
-        <CardFooter className="w-full text-xs flex flex-col xl:flex-row xl:justify-between">
+        <CardFooter
+          as={footer}
+          className="w-full text-xs flex flex-col xl:flex-row xl:justify-between"
+        >
           <div>WebApp by Colin Auberger</div>
           <div className="text-center order-last xl:order-none">
             Minigame concept taken from <b>Supervive</b>, a <b>Theorycraft</b>{" "}
