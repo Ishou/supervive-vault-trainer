@@ -1,4 +1,5 @@
 import { LockPickerResult } from "@/components/LockPicker/LockPicker";
+import { Card, CardBody } from "@nextui-org/react";
 
 type Color = "success" | "error" | "info";
 type Model = {
@@ -34,18 +35,21 @@ export default function LockPickerAlert(props: { type: LockPickerResult }) {
   const model = alertModels[props.type];
 
   return (
-    <div
+    <Card
+      shadow="none"
       className={
         model.color === "success"
-          ? `p-2 rounded bg-success text-success-foreground`
+          ? `!bg-success text-success-foreground`
           : model.color === "error"
-            ? `p-2 rounded bg-danger text-danger-foreground`
-            : `p-2 rounded bg-primary text-primary-foreground`
+            ? `!bg-danger text-danger-foreground`
+            : `!bg-primary text-primary-foreground`
       }
       role="alert"
     >
-      <div className="font-bold">{model.title}</div>
-      {model.message}
-    </div>
+      <CardBody>
+        <div className="font-bold">{model.title}</div>
+        {model.message}
+      </CardBody>
+    </Card>
   );
 }
