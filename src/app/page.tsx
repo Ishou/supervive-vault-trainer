@@ -43,15 +43,14 @@ export default function Home() {
         <Divider />
         <CardBody>
           <div className="grid grid-cols-8 gap-8 mx-4">
-            <div className="col-span-8 lg:col-span-4 lg:order-last">
+            <div className="col-span-8 my-auto flex flex-col lg:col-span-4">
+              <LockPicker options={options} radius={64} />
+            </div>
+            <div className="col-span-8 lg:col-span-4">
               <LockPickerOptionList
                 options={options}
                 changeHandler={(change) => setOptions(change)}
               />
-            </div>
-
-            <div className="col-span-8 my-auto flex flex-col lg:col-span-4">
-              <LockPicker options={options} radius={64} />
             </div>
           </div>
         </CardBody>
