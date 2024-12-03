@@ -1,9 +1,9 @@
 import Arc from "@/components/LockPicker/Arc";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LockPickerOptions } from "@/components/LockPicker/LockPickerOptionList";
-import { Button, Chip, Typography } from "@mui/material";
 import LockPickerAlert from "@/components/LockPickerAlert";
 import compareRange from "@/../utils/arc-compare";
+import { Button, Kbd } from "@nextui-org/react";
 
 export type LockPickerResult = "perfect" | "ok" | "fail" | "start";
 
@@ -39,7 +39,10 @@ export default function LockPicker(props: LockPickerProps) {
   const [running, setRunning] = useState(false);
   const [cursor, setCursor] = useState(0);
   const [offset, setOffset] = useState(0);
-  const [fps, setFps] = useState(0);
+  const [fps, setFps] = useState({
+    last: [] as number[],
+    fps: "000",
+  });
   const { radius = 48, options } = props;
   const width = 10;
 
@@ -50,7 +53,18 @@ export default function LockPicker(props: LockPickerProps) {
   const cursorOffset = (180 + cursor - cursorSize / 2) % 360;
 
   useAnimationFrame((deltaTime: number) => {
-    setFps(Math.floor(1000 / deltaTime));
+    setFps((prevFps) => {
+      const fps = 1000 / deltaTime;
+      const last = [...prevFps.last].concat([fps]);
+      if (last.length < 30) return { last, fps: prevFps.fps };
+      return {
+        last: [],
+        fps: (
+          "" +
+          Math.floor(last.reduce((prev, curr) => prev + curr, 0) / last.length)
+        ).padStart(3, "0"),
+      };
+    });
     if (running)
       setCursor((prevCount) => prevCount + deltaTime * (0.36 * options.speed));
   });
@@ -145,25 +159,10 @@ export default function LockPicker(props: LockPickerProps) {
         </svg>
       </div>
       <div className="mx-auto">
-        <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          disabled
-          endIcon={
-            <Chip
-              label="E"
-              color="secondary"
-              size="small"
-              sx={{ borderRadius: "4px" }}
-            />
-          }
-        >
-          Press
+        <Button color="primary" size="lg" onTouchStart={toggleRunning}>
+          Press <Kbd>E</Kbd> or Tap
         </Button>
-        <Typography className="text-center">
-          FPS: {("" + fps).padStart(3, "0")}
-        </Typography>
+        <div className="text-center mt-2">FPS: {fps.fps}</div>
       </div>
     </>
   );

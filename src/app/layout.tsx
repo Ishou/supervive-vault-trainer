@@ -1,30 +1,23 @@
 "use client";
+
 import * as React from "react";
 import "@/app/globals.css";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import theme from "@/app/theme";
-import { Container, Stack } from "@mui/material";
-import AppNav from "@/components/AppNav";
+import { NextUIProvider } from "@nextui-org/react";
+import { Geist } from "next/font/google";
+
+/* istanbul ignore next */
+const inter = Geist({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
-      <body className="h-full">
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-
-            <Stack className="min-h-full">
-              <AppNav />
-
-              <Container className="grow grid grid-cols-6">
-                {props.children}
-              </Container>
-            </Stack>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+    <html lang="en">
+      <body className={`dark text-foreground bg-background ${inter.className}`}>
+        <NextUIProvider className="min-h-screen h-full grow grid grid-cols-6">
+          {props.children}
+        </NextUIProvider>
       </body>
     </html>
   );

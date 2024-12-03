@@ -1,11 +1,19 @@
 "use client";
 
-import { Card, CardContent, CardHeader, Divider } from "@mui/material";
 import LockPicker from "@/components/LockPicker/LockPicker";
 import React, { useState } from "react";
 import LockPickerOptionList, {
   LockPickerOptions,
 } from "@/components/LockPicker/LockPickerOptionList";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Link,
+} from "@nextui-org/react";
 
 export default function Home() {
   const [options, setOptions] = useState<LockPickerOptions>({
@@ -15,24 +23,45 @@ export default function Home() {
   });
 
   return (
-    <div className="grid py-4 col-span-6 md:col-start-2 md:col-span-4">
+    <div className="grid p-4 col-span-6 md:col-start-2 md:col-span-4">
       <Card className="my-auto">
-        <CardHeader title="v0.0.0-ALPHA" />
+        <CardHeader>
+          <p className="text-lg">Supervive Vault Trainer</p>
+          <div className="grow"></div>
+          <Button
+            as={Link}
+            showAnchorIcon
+            href="https://github.com/Ishou/supervive-vault-trainer"
+            target="_blank"
+            variant="flat"
+          >
+            GitHub
+          </Button>
+        </CardHeader>
         <Divider />
-        <CardContent>
-          <div className="grid grid-cols-8 gap-8 mx-8">
-            <div className="col-span-4 my-auto flex flex-col">
-              <LockPicker options={options} />
-            </div>
-
-            <div className="col-span-4">
+        <CardBody>
+          <div className="grid grid-cols-8 gap-8 mx-4">
+            <div className="col-span-8 lg:col-span-4 lg:order-last">
               <LockPickerOptionList
                 options={options}
                 changeHandler={(change) => setOptions(change)}
               />
             </div>
+
+            <div className="col-span-8 my-auto flex flex-col lg:col-span-4">
+              <LockPicker options={options} radius={64} />
+            </div>
           </div>
-        </CardContent>
+        </CardBody>
+        <Divider />
+        <CardFooter className="w-full text-xs flex flex-col xl:flex-row xl:justify-between">
+          <div>WebApp by Colin Auberger</div>
+          <div className="text-center order-last xl:order-none">
+            Minigame concept taken from <b>Supervive</b>, a <b>Theorycraft</b>{" "}
+            trademark and copyright.
+          </div>
+          <div>v0.0.0-ALPHA</div>
+        </CardFooter>
       </Card>
     </div>
   );
