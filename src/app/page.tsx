@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="grid p-4 col-span-6 md:col-start-2 md:col-span-4">
-      <Card className="my-auto">
+      <Card className="my-auto" isFooterBlurred>
         <CardHeader as={header}>
           <p className="text-lg">Supervive Vault Trainer</p>
           <div className="grow"></div>
