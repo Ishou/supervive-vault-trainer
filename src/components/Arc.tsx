@@ -21,7 +21,7 @@ export default function Arc(props: ArcProps) {
   return (
     <>
       <path
-        {...props}
+        {...{ ...props, offset: Math.floor(props.offset || 0) }}
         d={`M ${start.x} ${start.y} A ${radius} ${radius} 0 ${flip} 1 ${end.x} ${end.y}`}
         fill="none"
         strokeWidth={width}

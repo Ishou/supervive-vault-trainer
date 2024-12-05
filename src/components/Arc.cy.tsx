@@ -1,5 +1,5 @@
 import React from "react";
-import Arc, { ArcProps } from "@/components/LockPicker/Arc";
+import Arc, { ArcProps } from "@/components/Arc";
 
 const arc1: ArcProps = {
   offset: 0,

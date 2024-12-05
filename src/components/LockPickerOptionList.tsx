@@ -28,15 +28,15 @@ const optionModels: LockPickerOptionModel[] = [
     label: "Size",
     format: (val) => `${val}°`,
     min: 5,
-    default: 12,
-    max: 120,
+    default: 145,
+    max: 145,
   },
   {
     key: "perfectSize",
     label: "Perfect Size",
     format: (val) => `${val}%`,
     min: 1,
-    default: 25,
+    default: 50,
     max: 100,
   },
 ];
@@ -58,6 +58,7 @@ export default function LockPickerOptionList(props: {
       {optionModels.map((model) => (
         <div key={model.key}>
           <Slider
+            data-cy={`lock-picker-option-${model.key}`}
             label={model.label}
             color="secondary"
             value={options[model.key]}
