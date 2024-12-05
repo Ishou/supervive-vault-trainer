@@ -1,4 +1,4 @@
-import { LockPickerResult } from "@/components/LockPicker/LockPicker";
+import { LockPickerResult } from "@/components/LockPicker";
 import { Card, CardBody } from "@nextui-org/react";
 
 type Color = "success" | "error" | "info";
@@ -36,6 +36,7 @@ export default function LockPickerAlert(props: { type: LockPickerResult }) {
 
   return (
     <Card
+      data-cy="lock-picker-result"
       shadow="none"
       className={
         model.color === "success"

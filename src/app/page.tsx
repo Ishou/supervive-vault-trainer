@@ -1,10 +1,10 @@
 "use client";
 
-import LockPicker from "@/components/LockPicker/LockPicker";
+import LockPicker from "@/components/LockPicker";
 import React, { useState } from "react";
 import LockPickerOptionList, {
   LockPickerOptions,
-} from "@/components/LockPicker/LockPickerOptionList";
+} from "@/components/LockPickerOptionList";
 import {
   Button,
   Card,
@@ -16,15 +16,15 @@ import {
 } from "@nextui-org/react";
 import { footer, header } from "framer-motion/m";
 
-export default function Home() {
+export default function HomePage() {
   const [options, setOptions] = useState<LockPickerOptions>({
     speed: 1.2,
-    size: 12,
-    perfectSize: 25,
+    size: 145,
+    perfectSize: 50,
   });
 
   return (
-    <div className="grid p-4 col-span-6 md:col-start-2 md:col-span-4">
+    <div className="grid p-4 col-span-6 w-full max-w-5xl mx-auto md:col-start-2 md:col-span-4">
       <Card className="my-auto" isFooterBlurred>
         <CardHeader as={header}>
           <p className="text-lg">Supervive Vault Trainer</p>

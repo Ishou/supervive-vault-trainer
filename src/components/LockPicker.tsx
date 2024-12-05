@@ -1,8 +1,8 @@
-import Arc from "@/components/LockPicker/Arc";
+import Arc from "@/components/Arc";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { LockPickerOptions } from "@/components/LockPicker/LockPickerOptionList";
+import { LockPickerOptions } from "@/components/LockPickerOptionList";
 import LockPickerAlert from "@/components/LockPickerAlert";
-import compareRange from "@/../utils/arc-compare";
+import compareRange from "../../utils/arc-compare";
 import { Button, Kbd } from "@nextui-org/react";
 
 export type LockPickerResult = "perfect" | "ok" | "fail" | "start";
@@ -119,51 +119,54 @@ export default function LockPicker(props: LockPickerProps) {
   }, [handleKeyDown]);
 
   return (
-    <>
+    <div data-cy="lock-picker" className="flex flex-col justify-center">
       <LockPickerAlert type={result} />
 
-      <div className="mx-auto">
-        <svg
-          width={radius * 4}
-          height={radius * 4}
-          viewBox={`${-radius * 2} ${-radius * 2} ${radius * 4} ${radius * 4}`}
-        >
-          {/* Track */}
-          <circle
-            r={radius}
-            className="stroke-gray-500"
-            fill="none"
-            strokeWidth={width}
-          ></circle>
-          {/* OK range */}
-          <Arc
-            className="stroke-green-700"
-            offset={offset}
-            angle={options.size}
-            radius={radius}
-          />
-          {/* Perfect Range */}
-          <Arc
-            className="stroke-green-300"
-            offset={perfectOffset}
-            angle={perfectSize}
-            radius={radius}
-          />
-          {/* Cursor */}
-          <Arc
-            className="stroke-orange-500"
-            offset={cursorOffset}
-            angle={cursorSize}
-            radius={radius}
-          />
-        </svg>
-      </div>
+      <svg
+        className="mx-auto"
+        width={radius * 4}
+        height={radius * 4}
+        viewBox={`${-radius * 2} ${-radius * 2} ${radius * 4} ${radius * 4}`}
+      >
+        {/* Track */}
+        <circle
+          r={radius}
+          className="stroke-black"
+          fill="none"
+          strokeWidth={width}
+        ></circle>
+        {/* OK range */}
+        <Arc
+          data-cy="lock-picker-ok"
+          className="stroke-green-700"
+          offset={offset}
+          angle={options.size}
+          radius={radius}
+        />
+        {/* Perfect Range */}
+        <Arc
+          data-cy="lock-picker-perfect"
+          className="stroke-green-300"
+          offset={perfectOffset}
+          angle={perfectSize}
+          radius={radius}
+        />
+        {/* Cursor */}
+        <Arc
+          data-cy="lock-picker-cursor"
+          className="stroke-yellow-500"
+          offset={cursorOffset}
+          angle={cursorSize}
+          radius={radius}
+        />
+      </svg>
+
       <div className="mx-auto">
         <Button color="primary" size="lg" onTouchStart={toggleRunning}>
           Press <Kbd>E</Kbd> or Tap
         </Button>
         <div className="text-center mt-2">FPS: {fps.fps}</div>
       </div>
-    </>
+    </div>
   );
 }
