@@ -24,7 +24,9 @@ describe("HomePage", () => {
       .as("speedOption")
       .get("input")
       .should("have.value", 1.2);
-    cy.get("@speedOption").click().type("{rightarrow}");
+    cy.get("@speedOption").click();
+    cy.get("@speedOption").get("[data-focused=true]");
+    cy.get("@speedOption").type("{rightarrow}");
     cy.get("@speedOption").get("input").should("have.value", 1.25);
   });
 
