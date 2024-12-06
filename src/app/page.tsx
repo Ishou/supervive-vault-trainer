@@ -59,12 +59,12 @@ export default function HomePage() {
           as={footer}
           className="w-full text-xs flex flex-col xl:flex-row xl:justify-between"
         >
-          <div>WebApp by Colin Auberger</div>
+          <div>Web App by Colin Auberger</div>
           <div className="text-center order-last xl:order-none">
-            Minigame concept taken from <b>Supervive</b>, a <b>Theorycraft</b>{" "}
-            trademark and copyright.
+            Fan-made Mini Game based on the vault mechanic from{" "}
+            <b>Theorycraft Games Inc&apos;s</b> <b>SUPERVIVE</b>.
           </div>
-          <div>v0.0.0-ALPHA</div>
+          <div>v0.0.0</div>
         </CardFooter>
       </Card>
     </div>
