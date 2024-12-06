@@ -16,6 +16,8 @@ import {
 } from "@nextui-org/react";
 import { footer, header } from "framer-motion/m";
 
+import packageInfos from "package.json";
+
 export default function HomePage() {
   const [options, setOptions] = useState<LockPickerOptions>({
     speed: 1.2,
@@ -33,7 +35,7 @@ export default function HomePage() {
             as={Link}
             role="link"
             showAnchorIcon
-            href="https://github.com/Ishou/supervive-vault-trainer"
+            href={packageInfos.repository}
             target="_blank"
             variant="flat"
           >
@@ -59,12 +61,15 @@ export default function HomePage() {
           as={footer}
           className="w-full text-xs flex flex-col xl:flex-row xl:justify-between"
         >
-          <div>Web App by Colin Auberger</div>
+          <div>
+            Copyright &copy; {new Date().getFullYear()}{" "}
+            {packageInfos.author.name}
+          </div>
           <div className="text-center order-last xl:order-none">
-            Fan-made Mini Game based on the vault mechanic from{" "}
+            Fan-made unofficial mini-game, based on the vault mechanic from{" "}
             <b>Theorycraft Games Inc&apos;s</b> <b>SUPERVIVE</b>.
           </div>
-          <div>v0.0.0</div>
+          <div>v{packageInfos.version}</div>
         </CardFooter>
       </Card>
     </div>
