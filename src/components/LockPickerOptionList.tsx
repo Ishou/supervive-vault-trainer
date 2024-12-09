@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Slider, SliderValue } from "@nextui-org/react";
+import {
+  LockPickerContext,
+  LockPickerDispatchContext,
+} from "@/components/LockPickerContext";
 
-type OptionKey = "speed" | "size" | "perfectSize";
+type OptionKey = "speed" | "size" | "perfectMultiplier";
 type LockPickerOptionModel = {
   key: OptionKey;
   label: string;
@@ -32,7 +36,7 @@ const optionModels: LockPickerOptionModel[] = [
     max: 145,
   },
   {
-    key: "perfectSize",
+    key: "perfectMultiplier",
     label: "Perfect Size",
     format: (val) => `${val}%`,
     min: 1,
@@ -41,17 +45,14 @@ const optionModels: LockPickerOptionModel[] = [
   },
 ];
 
-export type LockPickerOptions = Record<OptionKey, number>;
+export type LockPickerOptions = { autoDifficulty?: boolean } & Record<
+  OptionKey,
+  number
+>;
 
-export default function LockPickerOptionList(props: {
-  options: LockPickerOptions;
-  changeHandler: (options: LockPickerOptions) => void;
-}) {
-  const { options } = props;
-
-  const optionsChange = (key: OptionKey, change: number) => {
-    props.changeHandler({ ...options, [key]: change });
-  };
+export default function LockPickerOptionList() {
+  const { options } = useContext(LockPickerContext);
+  const dispatch = useContext(LockPickerDispatchContext);
 
   return (
     <div className="flex flex-col gap-4">
@@ -72,7 +73,9 @@ export default function LockPickerOptionList(props: {
               { value: model.default, label: model.format(model.default) },
               { value: model.max, label: model.format(model.max) },
             ]}
-            onChange={(change) => optionsChange(model.key, +change)}
+            onChange={(change) =>
+              dispatch({ type: "setOption", key: model.key, value: +change })
+            }
           ></Slider>
         </div>
       ))}

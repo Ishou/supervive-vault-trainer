@@ -9,10 +9,10 @@ On PC, press `E` to initiate a round and `E` again to attempt stopping the curso
 ## Upcoming features
 
 - Detailed information about vault mechanics on the website.
-- Accuracy and error information displayed at the end of each round.
-- More precise vault mechanics, including speed, size, and timer between rounds.
-- Automatic difficulty adjustments (also mimicking teammates destroying red pylons).
+- Optional timer between rounds.
+- Option to mimic teammates destroying red pylons.
 - Tracking of vault health and time to crack the vault for scoring purposes.
+- Accuracy and error information displayed at the end of each round.
 
 ## In-game vault mechanics (for reference)
 
