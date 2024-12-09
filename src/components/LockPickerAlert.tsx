@@ -1,7 +1,7 @@
 import { LockPickerResult } from "@/components/LockPicker";
-import { Card, CardBody } from "@nextui-org/react";
+import { Alert } from "@nextui-org/react";
 
-type Color = "success" | "error" | "info";
+type Color = "success" | "danger" | "primary";
 type Model = {
   color: Color;
   title: string;
@@ -20,12 +20,12 @@ const alertModels: Models = {
     message: "...° or ...ms from Perfect!",
   },
   fail: {
-    color: "error",
+    color: "danger",
     title: "Fail!",
     message: "...° or ...ms from OK!",
   },
   start: {
-    color: "info",
+    color: "primary",
     title: "GL & HF!",
     message: "Try your best!",
   },
@@ -35,22 +35,12 @@ export default function LockPickerAlert(props: { type: LockPickerResult }) {
   const model = alertModels[props.type];
 
   return (
-    <Card
+    <Alert
       data-cy="lock-picker-result"
-      shadow="none"
-      className={
-        model.color === "success"
-          ? `!bg-success text-success-foreground`
-          : model.color === "error"
-            ? `!bg-danger text-danger-foreground`
-            : `!bg-primary text-primary-foreground`
-      }
-      role="alert"
-    >
-      <CardBody>
-        <div className="font-bold">{model.title}</div>
-        {model.message}
-      </CardBody>
-    </Card>
+      variant="faded"
+      color={model.color}
+      title={model.title}
+      description={model.message}
+    />
   );
 }
