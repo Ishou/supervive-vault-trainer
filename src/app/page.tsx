@@ -1,77 +1,20 @@
 "use client";
 
 import LockPicker from "@/components/LockPicker";
-import React, { useState } from "react";
-import LockPickerOptionList, {
-  LockPickerOptions,
-} from "@/components/LockPickerOptionList";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Divider,
-  Link,
-} from "@nextui-org/react";
-import { footer, header } from "framer-motion/m";
-
-import packageInfos from "package.json";
+import React from "react";
+import LockPickerOptionsForm from "@/components/LockPickerOptionsForm";
+import LockPickerProvider from "@/components/LockPickerContext";
 
 export default function HomePage() {
-  const [options, setOptions] = useState<LockPickerOptions>({
-    speed: 1,
-    size: 145,
-    perfectSize: 50,
-  });
-
   return (
-    <div className="grid p-4 col-span-6 w-full max-w-5xl mx-auto md:col-start-2 md:col-span-4">
-      <Card className="my-auto" isFooterBlurred>
-        <CardHeader as={header}>
-          <p className="text-lg">Supervive Vault Trainer</p>
-          <div className="grow"></div>
-          <Button
-            as={Link}
-            role="link"
-            showAnchorIcon
-            href={packageInfos.repository}
-            target="_blank"
-            variant="flat"
-          >
-            GitHub
-          </Button>
-        </CardHeader>
-        <Divider />
-        <CardBody>
-          <div className="grid grid-cols-8 gap-8 mx-4">
-            <div className="col-span-8 my-auto flex flex-col lg:col-span-4">
-              <LockPicker options={options} radius={64} />
-            </div>
-            <div className="col-span-8 lg:col-span-4">
-              <LockPickerOptionList
-                options={options}
-                changeHandler={(change) => setOptions(change)}
-              />
-            </div>
-          </div>
-        </CardBody>
-        <Divider />
-        <CardFooter
-          as={footer}
-          className="w-full text-xs flex flex-col xl:flex-row xl:justify-between"
-        >
-          <div>
-            Copyright &copy; {new Date().getFullYear()}{" "}
-            {packageInfos.author.name}
-          </div>
-          <div className="text-center order-last xl:order-none">
-            Fan-made unofficial mini-game, based on the vault mechanic from{" "}
-            <b>Theorycraft Games Inc&apos;s</b> <b>SUPERVIVE</b>.
-          </div>
-          <div>v{packageInfos.version}</div>
-        </CardFooter>
-      </Card>
-    </div>
+    <LockPickerProvider>
+      <div className="grid grid-cols-2 gap-8 mx-4">
+        <div className="col-span-2 my-auto flex flex-col xl:col-span-1">
+          <LockPicker />
+        </div>
+
+        <LockPickerOptionsForm />
+      </div>
+    </LockPickerProvider>
   );
 }

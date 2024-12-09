@@ -1,5 +1,5 @@
-import { LockPickerResult } from "@/components/LockPicker";
 import { Alert } from "@nextui-org/react";
+import { LockPickerResult } from "@/components/LockPickerContext";
 
 type Color = "success" | "danger" | "secondary";
 type Model = {
@@ -31,7 +31,9 @@ const alertModels: Models = {
   },
 };
 
-export default function LockPickerAlert(props: { type: LockPickerResult }) {
+export default function LockPickerResultAlert(props: {
+  type: LockPickerResult;
+}) {
   const model = alertModels[props.type];
 
   return (

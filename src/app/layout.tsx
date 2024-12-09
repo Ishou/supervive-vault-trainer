@@ -1,9 +1,19 @@
 import * as React from "react";
 import "@/app/globals.css";
-import { NextUIProvider } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Link,
+  NextUIProvider,
+} from "@nextui-org/react";
 import { Geist } from "next/font/google";
 
 import packageInfos from "package.json";
+import { footer, header } from "framer-motion/m";
 
 /* istanbul ignore next */
 const inter = Geist({
@@ -26,8 +36,40 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <meta name="author" content={packageInfos.author.name} />
       </head>
       <body className={`dark text-foreground bg-background ${inter.className}`}>
-        <NextUIProvider className="min-h-screen h-full grow grid grid-cols-6">
-          {props.children}
+        <NextUIProvider className="min-h-screen h-full w-full grid max-w-5xl mx-auto p-4">
+          <Card className="my-auto" isFooterBlurred>
+            <CardHeader as={header}>
+              <p className="text-lg">Supervive Vault Trainer</p>
+              <div className="grow"></div>
+              <Button
+                as={Link}
+                role="link"
+                showAnchorIcon
+                href={packageInfos.repository}
+                target="_blank"
+                variant="flat"
+              >
+                GitHub
+              </Button>
+            </CardHeader>
+            <Divider />
+            <CardBody>{props.children}</CardBody>
+            <Divider />
+            <CardFooter
+              as={footer}
+              className="w-full text-xs flex flex-col xl:flex-row xl:justify-between"
+            >
+              <div>
+                Copyright &copy; {new Date().getFullYear()}{" "}
+                {packageInfos.author.name}
+              </div>
+              <div className="text-center order-last xl:order-none">
+                Fan-made unofficial mini-game, based on the vault mechanic from{" "}
+                <b>Theorycraft Games Inc&apos;s</b> <b>SUPERVIVE</b>.
+              </div>
+              <div>v{packageInfos.version}</div>
+            </CardFooter>
+          </Card>
         </NextUIProvider>
       </body>
     </html>

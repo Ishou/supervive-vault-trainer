@@ -1,126 +1,104 @@
 import Arc from "@/components/Arc";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { LockPickerOptions } from "@/components/LockPickerOptionList";
-import LockPickerAlert from "@/components/LockPickerAlert";
-import compareRange from "../../utils/arc-compare";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import LockPickerResultAlert from "@/components/LockPickerResultAlert";
 import { Button, Kbd } from "@nextui-org/react";
-
-export type LockPickerResult = "perfect" | "ok" | "fail" | "start";
+import {
+  LockPickerContext,
+  LockPickerDispatchContext,
+} from "@/components/LockPickerContext";
 
 export interface LockPickerProps {
-  options: LockPickerOptions;
   radius?: number;
+  width?: number;
 }
 
 const useAnimationFrame = (callback: (deltaTime: number) => void) => {
   const requestRef = useRef(0);
   const previousTimeRef = useRef(0);
 
-  const animate = useCallback(
-    (time: number) => {
+  useEffect(() => {
+    const animate = (time: number) => {
       if (previousTimeRef.current) {
         const deltaTime = time - previousTimeRef.current;
         callback(deltaTime);
       }
       previousTimeRef.current = time;
       requestRef.current = requestAnimationFrame(animate);
-    },
-    [callback],
-  );
+    };
 
-  useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [animate]);
+  }, [callback]);
 };
 
 export default function LockPicker(props: LockPickerProps) {
-  const [result, setResult] = useState<LockPickerResult>("start");
-  const [running, setRunning] = useState(false);
-  const [cursor, setCursor] = useState(0);
-  const [offset, setOffset] = useState(0);
-  const [fps, setFps] = useState({
-    last: [] as number[],
-    fps: "000",
-  });
-  const { radius = 48, options } = props;
-  const width = 10;
+  const state = useContext(LockPickerContext);
+  const dispatch = useContext(LockPickerDispatchContext);
 
-  const perfectSize = (options.size * options.perfectSize) / 100;
-  const perfectOffset = offset + options.size / 2 - perfectSize / 2;
+  const [running, setRunning] = useState(false);
+
+  const { radius = 64, width = 10 } = props;
+
+  const { result, offset, cursor, fpsCounter, options } = state;
+
+  const size = options.size;
+  const perfectMultiplier = options.perfectMultiplier;
+
+  const perfectSize = (size * perfectMultiplier) / 100;
+  const perfectOffset = offset + size / 2 - perfectSize / 2;
 
   const cursorSize = 3;
-  const cursorOffset = (180 + cursor - cursorSize / 2) % 360;
+  const cursorOffset = 180 + cursor - cursorSize / 2;
 
   useAnimationFrame((deltaTime: number) => {
-    setFps((prevFps) => {
-      const fps = 1000 / deltaTime;
-      const last = [...prevFps.last].concat([fps]);
-      if (last.length < 30) return { last, fps: prevFps.fps };
-      return {
-        last: [],
-        fps: (
-          "" +
-          Math.floor(last.reduce((prev, curr) => prev + curr, 0) / last.length)
-        ).padStart(3, "0"),
-      };
+    dispatch({
+      type: "newFrame",
+      deltaTime,
+      running,
     });
-    if (running)
-      setCursor((prevCount) => prevCount + deltaTime * (0.36 * options.speed));
   });
 
-  const toggleRunning = useCallback(() => {
-    if (result === "start") {
-      if (running) {
-        const range = (offset: number, size: number) => {
-          const start = offset % 360;
-          const end = (offset + size) % 360;
-          return [start, end];
-        };
-        const cursorRange = range(cursorOffset, cursorSize);
+  const toggleRunning = () => {
+    setRunning((running) => {
+      return result !== "start" ? false : !running;
+    });
 
-        if (compareRange(cursorRange, range(perfectOffset, perfectSize)))
-          setResult("perfect");
-        else if (compareRange(cursorRange, range(offset, options.size)))
-          setResult("ok");
-        else setResult("fail");
-      }
-
-      setRunning(!running);
-    } else {
-      setResult("start");
-      setCursor(0);
-      setOffset((300 + Math.random() * 160) % 360);
+    // Stopping cursor and updating result alert
+    if (result !== "start" || running) {
+      dispatch({
+        type: "updateResult",
+        offset,
+        size,
+        cursorOffset,
+        cursorSize,
+        perfectOffset,
+        perfectSize,
+      });
     }
-  }, [
-    result,
-    running,
-    cursorOffset,
-    perfectOffset,
-    perfectSize,
-    offset,
-    options.size,
-  ]);
+  };
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code !== "KeyE") return;
       event.preventDefault();
 
       toggleRunning();
-    },
-    [toggleRunning],
-  );
+    };
 
-  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
+  });
 
   return (
     <div data-cy="lock-picker" className="flex flex-col justify-center">
-      <LockPickerAlert type={result} />
+      <LockPickerResultAlert type={result} />
 
       <svg
         className="mx-auto"
@@ -140,7 +118,7 @@ export default function LockPicker(props: LockPickerProps) {
           data-cy="lock-picker-ok"
           className="stroke-green-700"
           offset={offset}
-          angle={options.size}
+          angle={size}
           radius={radius}
         />
         {/* Perfect Range */}
@@ -162,10 +140,10 @@ export default function LockPicker(props: LockPickerProps) {
       </svg>
 
       <div className="mx-auto">
-        <Button color="primary" size="lg" onTouchStart={toggleRunning}>
+        <Button color="primary" size="lg" onTouchEnd={toggleRunning}>
           Press <Kbd>E</Kbd> or Tap
         </Button>
-        <div className="text-center mt-2">FPS: {fps.fps}</div>
+        <div className="text-center mt-2">FPS: {fpsCounter.label}</div>
       </div>
     </div>
   );

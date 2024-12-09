@@ -35,7 +35,7 @@ describe("HomePage", () => {
 
     cy.get("[data-cy=lock-picker]").click();
     cy.document().trigger("keydown", { code: "KeyE" });
-    cy.document().wait(500);
+    cy.document().wait(100);
     cy.document().trigger("keydown", { code: "KeyE" });
 
     cy.get("[data-cy=lock-picker-result]").should(
@@ -49,7 +49,7 @@ describe("HomePage", () => {
 
     cy.get("[data-cy=lock-picker]").click();
     cy.document().trigger("keydown", { code: "KeyE" });
-    cy.document().wait(200);
+    cy.document().wait(100);
     cy.document().trigger("keydown", { code: "KeyE" });
     cy.get("[data-cy=lock-picker-result]").should(
       "not.have.text",
@@ -60,46 +60,5 @@ describe("HomePage", () => {
     cy.get("[data-cy=lock-picker-result]")
       .should("have.text", "GL & HF!Try your best!")
       .and("have.class", "!bg-primary");
-  });
-
-  // Need a way to fake timer of requestAnimationFrame for following tests
-
-  it.skip("picks with perfect result", () => {
-    cy.visit("/");
-
-    cy.get("[data-cy=lock-picker]").click();
-    cy.document().trigger("keydown", { code: "KeyE" });
-    cy.document().wait(500);
-    cy.document().trigger("keydown", { code: "KeyE" });
-
-    cy.get("[data-cy=lock-picker-result]")
-      .should("have.text", "Perfect!... % accuracy")
-      .and("have.class", "!bg-success");
-  });
-
-  it.skip("picks with OK result", () => {
-    cy.visit("/");
-
-    cy.get("[data-cy=lock-picker]").click();
-    cy.document().trigger("keydown", { code: "KeyE" });
-    cy.document().wait(425);
-    cy.document().trigger("keydown", { code: "KeyE" });
-
-    cy.get("[data-cy=lock-picker-result]")
-      .should("have.text", "OK!...° or ...ms from Perfect!")
-      .and("have.class", "!bg-success");
-  });
-
-  it.skip("picks with failed result", () => {
-    cy.visit("/");
-
-    cy.get("[data-cy=lock-picker]").click();
-    cy.document().trigger("keydown", { code: "KeyE" });
-    cy.document().wait(200);
-    cy.document().trigger("keydown", { code: "KeyE" });
-
-    cy.get("[data-cy=lock-picker-result]")
-      .should("have.text", "Fail!...° or ...ms from OK!")
-      .and("have.class", "!bg-danger");
   });
 });
