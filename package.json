@@ -8,7 +8,7 @@
   "description": "A fan-made, unofficial mini-game by Colin Auberger, based on the vault mechanic from Theorycraft Games Inc.'s SUPERVIVE.",
   "homepage": "https://ishou.github.io/supervive-vault-trainer/",
   "repository": "https://github.com/Ishou/supervive-vault-trainer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "private": true,
   "scripts": {
