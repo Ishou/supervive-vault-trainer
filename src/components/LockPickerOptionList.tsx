@@ -20,7 +20,7 @@ const optionModels: LockPickerOptionModel[] = [
     format: (val) => `${val}RPS`,
     step: 0.05,
     min: 0.5,
-    default: 1.2,
+    default: 1,
     max: 2,
   },
   {

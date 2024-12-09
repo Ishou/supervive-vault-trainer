@@ -13,12 +13,12 @@ export interface LockPickerProps {
 }
 
 const useAnimationFrame = (callback: (deltaTime: number) => void) => {
-  const requestRef = useRef<number>(0);
-  const previousTimeRef = useRef<number>();
+  const requestRef = useRef(0);
+  const previousTimeRef = useRef(0);
 
   const animate = useCallback(
     (time: number) => {
-      if (previousTimeRef.current != undefined) {
+      if (previousTimeRef.current) {
         const deltaTime = time - previousTimeRef.current;
         callback(deltaTime);
       }
