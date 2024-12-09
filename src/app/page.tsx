@@ -20,7 +20,7 @@ import packageInfos from "package.json";
 
 export default function HomePage() {
   const [options, setOptions] = useState<LockPickerOptions>({
-    speed: 1.2,
+    speed: 1,
     size: 145,
     perfectSize: 50,
   });
