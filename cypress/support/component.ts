@@ -1,4 +1,5 @@
 import "@cypress/code-coverage/support";
+
 // ***********************************************************
 // This example support/component.ts is processed and
 // loaded automatically before your test files.
@@ -21,6 +22,8 @@ import "./commands";
 // require('./commands')
 
 import { mount } from "cypress/react18";
+
+import "@/app/globals.css";
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
