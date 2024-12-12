@@ -44,9 +44,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
               <Button
                 as={Link}
                 role="link"
+                isExternal
                 showAnchorIcon
                 href={packageInfos.repository}
-                target="_blank"
                 variant="flat"
               >
                 GitHub

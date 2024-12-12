@@ -1,5 +1,4 @@
 import { Alert } from "@nextui-org/react";
-import { LockPickerResult } from "@/components/LockPickerContext";
 
 type Color = "success" | "danger" | "secondary";
 type Model = {
@@ -7,7 +6,7 @@ type Model = {
   title: string;
   message: string;
 };
-type Models = Record<LockPickerResult, Model>;
+type Models = Record<GameResults, Model>;
 const alertModels: Models = {
   perfect: {
     color: "success",
@@ -31,15 +30,16 @@ const alertModels: Models = {
   },
 };
 
-export default function LockPickerResultAlert(props: {
-  type: LockPickerResult;
-}) {
-  const model = alertModels[props.type];
+export type GameResults = "start" | "perfect" | "ok" | "fail";
+
+export default function GameResult(props: { result: GameResults }) {
+  const { result } = props;
+  const model = alertModels[result];
 
   return (
     <div className="min-h-24">
       <Alert
-        data-cy="lock-picker-result"
+        data-cy="game-result"
         variant="faded"
         color={model.color}
         title={model.title}

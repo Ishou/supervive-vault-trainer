@@ -1,150 +1,101 @@
 import Arc from "@/components/Arc";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import LockPickerResultAlert from "@/components/LockPickerResultAlert";
-import { Button, Kbd } from "@nextui-org/react";
-import {
-  LockPickerContext,
-  LockPickerDispatchContext,
-} from "@/components/LockPickerContext";
+import React, { useEffect, useState } from "react";
+import { GameDifficulty } from "@/components/GameOptions";
+import { useAnimationLoop } from "@/components/FpsCounter";
 
-export interface LockPickerProps {
-  radius?: number;
-  width?: number;
-}
-
-const useAnimationFrame = (callback: (deltaTime: number) => void) => {
-  const requestRef = useRef(0);
-  const previousTimeRef = useRef(0);
-
-  useEffect(() => {
-    const animate = (time: number) => {
-      if (previousTimeRef.current) {
-        const deltaTime = time - previousTimeRef.current;
-        callback(deltaTime);
-      }
-      previousTimeRef.current = time;
-      requestRef.current = requestAnimationFrame(animate);
-    };
-
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [callback]);
+type Props = {
+  radius: number;
+  width: number;
+  okOffset: number;
+  difficulty: GameDifficulty;
+  cursorStart: number;
+  cursorSize: number;
+  isRunning: boolean;
+  isGameEnd: boolean;
+  dataHandler: (
+    perfectOffset: number,
+    perfectSize: number,
+    cursorOffset: number,
+  ) => void;
 };
 
-export default function LockPicker(props: LockPickerProps) {
-  const state = useContext(LockPickerContext);
-  const dispatch = useContext(LockPickerDispatchContext);
+export default function LockPicker(props: Props) {
+  const {
+    radius,
+    width,
+    okOffset,
+    difficulty,
+    cursorStart,
+    cursorSize,
+    isRunning,
+    isGameEnd,
+    dataHandler,
+  } = props;
 
-  const [running, setRunning] = useState(false);
+  const initialCursorOffset = cursorStart - cursorSize / 2;
+  const perfectSize = (difficulty.size * difficulty.perfectMultiplier) / 100;
+  const perfectOffset = okOffset + difficulty.size / 2 - perfectSize / 2;
 
-  const { radius = 64, width = 10 } = props;
+  const [cursorOffset, setCursorOffset] = useState(initialCursorOffset);
 
-  const { result, offset, cursor, fpsCounter, options } = state;
+  dataHandler(perfectOffset, perfectSize, cursorOffset);
 
-  const size = options.size;
-  const perfectMultiplier = options.perfectMultiplier;
-
-  const perfectSize = (size * perfectMultiplier) / 100;
-  const perfectOffset = offset + size / 2 - perfectSize / 2;
-
-  const cursorSize = 3;
-  const cursorOffset = 180 + cursor - cursorSize / 2;
-
-  useAnimationFrame((deltaTime: number) => {
-    dispatch({
-      type: "newFrame",
-      deltaTime,
-      running,
-    });
+  useAnimationLoop((delta) => {
+    setCursorOffset((cursorOffset) =>
+      !isRunning
+        ? cursorOffset
+        : cursorOffset + delta * 0.36 * difficulty.speed,
+    );
   });
-
-  const toggleRunning = () => {
-    setRunning((running) => {
-      return result !== "start" ? false : !running;
-    });
-
-    // Stopping cursor and updating result alert
-    if (result !== "start" || running) {
-      dispatch({
-        type: "updateResult",
-        offset,
-        size,
-        cursorOffset,
-        cursorSize,
-        perfectOffset,
-        perfectSize,
-      });
-    }
-  };
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code !== "KeyE") return;
-      event.preventDefault();
-
-      toggleRunning();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  });
+    if (isGameEnd) {
+      setCursorOffset(initialCursorOffset);
+    }
+  }, [isGameEnd, initialCursorOffset]);
 
   return (
-    <div data-cy="lock-picker" className="flex flex-col justify-center">
-      <LockPickerResultAlert type={result} />
-
-      <svg
-        className="mx-auto"
-        width={radius * 4}
-        height={radius * 4}
-        viewBox={`${-radius * 2} ${-radius * 2} ${radius * 4} ${radius * 4}`}
-      >
-        {/* Track */}
-        <circle
-          r={radius}
-          className="stroke-black"
-          fill="none"
-          strokeWidth={width}
-        ></circle>
-        {/* OK range */}
-        <Arc
-          data-cy="lock-picker-ok"
-          className="stroke-green-700"
-          offset={offset}
-          angle={size}
-          radius={radius}
-        />
-        {/* Perfect Range */}
-        <Arc
-          data-cy="lock-picker-perfect"
-          className="stroke-green-300"
-          offset={perfectOffset}
-          angle={perfectSize}
-          radius={radius}
-        />
-        {/* Cursor */}
-        <Arc
-          data-cy="lock-picker-cursor"
-          className="stroke-yellow-500"
-          offset={cursorOffset}
-          angle={cursorSize}
-          radius={radius}
-        />
-      </svg>
-
-      <div className="mx-auto">
-        <Button color="primary" size="lg" onTouchEnd={toggleRunning}>
-          Press <Kbd>E</Kbd> or Tap
-        </Button>
-        <div className="text-center mt-2">FPS: {fpsCounter.label}</div>
-      </div>
-    </div>
+    <svg
+      data-cy="lock-picker"
+      className="mx-auto"
+      width={radius * 4}
+      height={radius * 4}
+      viewBox={`${-radius * 2} ${-radius * 2} ${radius * 4} ${radius * 4}`}
+    >
+      {/* Track */}
+      <circle
+        r={radius}
+        className="stroke-black"
+        fill="none"
+        strokeWidth={width}
+      ></circle>
+      {/* OK range */}
+      <Arc
+        data-cy="lock-picker-ok"
+        className="stroke-green-700"
+        offset={okOffset}
+        size={difficulty.size}
+        radius={radius}
+        width={width}
+      />
+      {/* Perfect Range */}
+      <Arc
+        data-cy="lock-picker-perfect"
+        className="stroke-green-300"
+        offset={perfectOffset}
+        size={perfectSize}
+        radius={radius}
+        width={width}
+      />
+      {/* Cursor */}
+      <Arc
+        data-cy="lock-picker-cursor"
+        className="stroke-yellow-500"
+        offset={cursorOffset}
+        size={cursorSize}
+        radius={radius}
+        width={width}
+      />
+    </svg>
   );
 }

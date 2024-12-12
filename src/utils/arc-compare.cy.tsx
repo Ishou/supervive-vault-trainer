@@ -1,9 +1,11 @@
-import assert from "node:assert";
-import { describe, it } from "node:test";
-import compareRange from "./arc-compare.js";
+import compareRange from "./arc-compare";
 
 describe("compareRange", () => {
-  const cases = [
+  const cases: {
+    r1: [number, number];
+    r2: [number, number];
+    overlaps: boolean;
+  }[] = [
     {
       r1: [0, 20],
       r2: [5, 10],
@@ -74,19 +76,11 @@ describe("compareRange", () => {
 
   cases.forEach((c, i) => {
     it(`verifies case ${i + 1}`, () => {
-      assert.strictEqual(
-        compareRange(c.r1, c.r2),
-        c.overlaps,
-        `Case ${i + 1}: r1[${c.r1[0]},${c.r1[1]}] vs r2[${c.r2[0]},${c.r2[1]}]`,
-      );
+      cy.wrap(compareRange(c.r1, c.r2)).should("eql", c.overlaps);
     });
 
     it(`verifies case ${i + 1} (reversed)`, () => {
-      assert.strictEqual(
-        compareRange(c.r2, c.r1),
-        c.overlaps,
-        `Case ${i + 1} (reversed): r1[${c.r2[0]},${c.r2[1]}] vs r2[${c.r1[0]},${c.r1[1]}]`,
-      );
+      cy.wrap(compareRange(c.r2, c.r1)).should("eql", c.overlaps);
     });
   });
 });
