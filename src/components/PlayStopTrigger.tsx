@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Kbd } from "@nextui-org/react";
 
 export default function PlayStopTrigger(props: { toggleHandler: () => void }) {

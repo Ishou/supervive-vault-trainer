@@ -1,13 +1,11 @@
-import React, { useRef, useState } from "react";
-import PlayStopTrigger from "@/components/PlayStopTrigger";
-import GameResult, { GameResults } from "@/components/GameResult";
-import GameOptions, {
-  GameDifficulties,
-  GameDifficulty,
-} from "@/components/GameOptions";
-import LockPicker from "@/components/LockPicker";
-import FpsCounter from "@/components/FpsCounter";
-import compareRange from "@/utils/arc-compare";
+import { useRef, useState } from "react";
+import PlayStopTrigger from "./PlayStopTrigger";
+import GameResult, { GameResults } from "./GameResult";
+import GameOptions, { GameDifficulty } from "./GameOptions";
+import LockPicker from "./LockPicker";
+import FpsCounter from "./FpsCounter";
+import compareRange from "../utils/arc-compare";
+import { GameDifficulties } from "./GameDifficulties";
 
 type Props = {
   radius?: number;

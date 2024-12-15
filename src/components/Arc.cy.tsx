@@ -1,5 +1,4 @@
-import React from "react";
-import Arc, { ArcProps } from "@/components/Arc";
+import Arc, { ArcProps } from "./Arc";
 
 const arc1: ArcProps = {
   offset: 0,

@@ -1,7 +1,8 @@
-import Arc from "@/components/Arc";
-import React, { useEffect, useState } from "react";
-import { GameDifficulty } from "@/components/GameOptions";
-import { useAnimationLoop } from "@/components/FpsCounter";
+import Arc from "./Arc";
+import { useEffect, useState } from "react";
+import { GameDifficulty } from "./GameOptions";
+
+import { useAnimationLoop } from "./UseAnimationLoop";
 
 type Props = {
   radius: number;

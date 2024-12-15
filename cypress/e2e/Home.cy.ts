@@ -1,19 +1,19 @@
-function verifyOptions(size: string, perfectMultiplier: string) {
-  cy.get("[data-cy=game-option-size] input").should("have.value", size);
-  cy.get("[data-cy=game-option-perfectMultiplier] input").should(
-    "have.value",
-    perfectMultiplier,
-  );
-}
-
-function playSequence(ticks: number[]) {
-  ticks.map((tick) => {
-    cy.tick(tick);
-    cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
-  });
-}
-
 describe("HomePage", () => {
+  function verifyOptions(size: string, perfectMultiplier: string) {
+    cy.get("[data-cy=game-option-size] input").should("have.value", size);
+    cy.get("[data-cy=game-option-perfectMultiplier] input").should(
+      "have.value",
+      perfectMultiplier,
+    );
+  }
+
+  function playSequence(ticks: number[]) {
+    ticks.map((tick) => {
+      cy.tick(tick);
+      cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
+    });
+  }
+
   it("renders", () => {
     cy.clock();
     cy.visit("/");
