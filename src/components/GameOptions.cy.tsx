@@ -1,4 +1,4 @@
-import GameOptions from "@/components/GameOptions";
+import GameOptions from "./GameOptions";
 
 describe("<GameOptions />", () => {
   it("renders", () => {

@@ -2,6 +2,7 @@
 .idea
 .swc
 .nyc_output
+dist
 
 # dependencies
 /node_modules
@@ -15,10 +16,6 @@
 
 # testing
 /coverage
-
-# next.js
-/.next/
-/out/
 
 # production
 /build

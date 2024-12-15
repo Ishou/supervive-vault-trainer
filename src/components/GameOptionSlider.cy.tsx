@@ -1,4 +1,4 @@
-import GameOptionSlider from "@/components/GameOptionSlider";
+import GameOptionSlider from "./GameOptionSlider";
 
 describe("<GameOptionSlider />", () => {
   it("renders", () => {

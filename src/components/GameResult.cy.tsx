@@ -1,4 +1,3 @@
-import React from "react";
 import GameResult from "./GameResult";
 
 describe("<GameResult />", () => {

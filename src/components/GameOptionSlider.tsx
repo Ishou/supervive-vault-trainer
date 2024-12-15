@@ -1,5 +1,4 @@
 import { Slider, SliderValue } from "@nextui-org/react";
-import React from "react";
 
 type Props = {
   id: string;
