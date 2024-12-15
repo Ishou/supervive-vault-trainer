@@ -1,5 +1,4 @@
-import React from "react";
-import FpsCounter from "@/components/FpsCounter";
+import FpsCounter from "./FpsCounter";
 
 describe("<FpsCounter />", () => {
   it("renders", () => {

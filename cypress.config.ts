@@ -1,40 +1,27 @@
 import { defineConfig } from "cypress";
-import path from "path";
 
-import cypressCodeCoverage from "@cypress/code-coverage/task";
+// @ts-expect-error force require
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
 
 export default defineConfig({
   component: {
     devServer: {
-      framework: "next",
-      bundler: "webpack",
-      webpackConfig: {
-        resolve: {
-          alias: {
-            "@/": path.resolve(__dirname, "./src"),
-          },
-        },
-      },
+      framework: "react",
+      bundler: "vite",
     },
     setupNodeEvents(on, config) {
-      cypressCodeCoverage(on, config);
+      registerCodeCoverageTasks(on, config);
 
       return config;
     },
   },
   e2e: {
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://localhost:5173",
     setupNodeEvents(on, config) {
-      cypressCodeCoverage(on, config);
+      registerCodeCoverageTasks(on, config);
 
       return config;
-    },
-    env: {
-      codeCoverage: {
-        // At end of run, call this endpoint to retrieve code coverage info from the backend
-        // and combine with coverage info from frontend code executed in the browser
-        url: "http://localhost:3000/api/__coverage__",
-      },
     },
   },
 });

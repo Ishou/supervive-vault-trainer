@@ -1,5 +1,4 @@
-import React from "react";
-import PlayStopTrigger from "@/components/PlayStopTrigger";
+import PlayStopTrigger from "./PlayStopTrigger";
 
 describe("<PlayStopTrigger />", () => {
   it("renders", () => {
