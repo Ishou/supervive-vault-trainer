@@ -18,11 +18,14 @@ describe("HomePage", () => {
       "GL & HF!Try your best!",
     );
     cy.get("[data-cy=fps-counter]").should("have.text", "FPS: 000");
+    cy.get("[data-cy=lock-picker]").should("exist");
   });
 
   it("plays and gets perfect score", () => {
     cy.clock();
     cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
 
     cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
     cy.tick(650);
@@ -46,6 +49,8 @@ describe("HomePage", () => {
     cy.clock();
     cy.visit("/");
 
+    cy.get("[data-cy=lock-picker]").should("exist");
+
     cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
     cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
 
@@ -55,6 +60,8 @@ describe("HomePage", () => {
   it("resets difficulty", () => {
     cy.clock();
     cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
 
     // Level 1
     cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
@@ -74,6 +81,8 @@ describe("HomePage", () => {
     cy.clock();
     cy.visit("/");
 
+    cy.get("[data-cy=lock-picker]").should("exist");
+
     cy.get("[data-cy=game-auto-difficulty-toggle]").click();
 
     // Level 1
@@ -91,6 +100,8 @@ describe("HomePage", () => {
   it("resets options if going back to auto difficulty", () => {
     cy.clock();
     cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
 
     // Level 1
     cy.get("[data-cy=play-stop-trigger]").trigger("touchend");
@@ -116,6 +127,8 @@ describe("HomePage", () => {
   it("increases difficulty each game by default", () => {
     cy.clock();
     cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
 
     // Level 0
     cy.get("[data-cy=game-option-size] input").should("have.value", "140");
@@ -172,6 +185,8 @@ describe("HomePage", () => {
   it("allows to change options", () => {
     cy.clock();
     cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
 
     cy.get("[data-cy=game-auto-difficulty-toggle]").click();
     cy.get("[data-cy=game-option-speed][data-disabled=false]")
