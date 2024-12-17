@@ -21,7 +21,7 @@ describe("HomePage", () => {
     cy.get("[data-cy=lock-picker]").should("exist");
 
     cy.get("header").should("exist");
-    cy.get("header [role=link]")
+    cy.get("[data-cy=github-link][role=link]")
       .should(
         "have.attr",
         "href",

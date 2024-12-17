@@ -19,11 +19,17 @@ createRoot(rootElement).render(
   <NextUIProvider className="min-h-screen h-full w-full grid max-w-5xl mx-auto p-4">
     <Card className="my-auto" isFooterBlurred>
       <CardHeader as={header}>
-        <Link href="#" color="foreground">
+        <Link href="#" color="foreground" role="link">
           <h1 className="text-lg">Supervive Vault Trainer</h1>
         </Link>
         <div className="grow"></div>
-        <Link role="link" isExternal showAnchorIcon href={__APP_REPOSITORY__}>
+        <Link
+          data-cy="github-link"
+          role="link"
+          isExternal
+          showAnchorIcon
+          href={__APP_REPOSITORY__}
+        >
           GitHub
         </Link>
       </CardHeader>
