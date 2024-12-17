@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { footer, header } from "framer-motion/m";
 import Game from "./components/Game";
+import { Suspense } from "react";
 
 const rootElement = document.querySelector("#root") as Element;
 
@@ -18,7 +19,9 @@ createRoot(rootElement).render(
   <NextUIProvider className="min-h-screen h-full w-full grid max-w-5xl mx-auto p-4">
     <Card className="my-auto" isFooterBlurred>
       <CardHeader as={header}>
-        <p className="text-lg">Supervive Vault Trainer</p>
+        <Link href="#" color="foreground">
+          <h1 className="text-lg">Supervive Vault Trainer</h1>
+        </Link>
         <div className="grow"></div>
         <Link role="link" isExternal showAnchorIcon href={__APP_REPOSITORY__}>
           GitHub
@@ -26,7 +29,9 @@ createRoot(rootElement).render(
       </CardHeader>
       <Divider />
       <CardBody>
-        <Game />
+        <Suspense fallback={<p>Loading...</p>}>
+          <Game />
+        </Suspense>
       </CardBody>
       <Divider />
       <CardFooter
