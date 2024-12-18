@@ -1,43 +1,51 @@
 import { Button, Switch } from "@nextui-org/react";
 import { useState } from "react";
 import GameOptionSlider from "./GameOptionSlider";
-import { GameDifficulties } from "./GameDifficulties";
+import { GameDifficulties, GameDifficulty } from "./GameDifficulties";
 
-export type GameDifficulty = {
-  level?: number;
-  speed: number;
-  size: number;
-  perfectMultiplier: number;
+export type GameOptions = {
+  withCountdown: boolean;
 };
 type Props = {
+  options: GameOptions;
   difficulty: GameDifficulty;
-  changeHandler: (options: GameDifficulty) => void;
+  optionsChangeHandler: (options: GameOptions) => void;
+  difficultyChangeHandler: (difficulty: GameDifficulty) => void;
 };
-export default function GameOptions(props: Props) {
-  const { difficulty, changeHandler } = props;
+export default function GameOptionsForm(props: Props) {
+  const { options, difficulty, optionsChangeHandler, difficultyChangeHandler } =
+    props;
   const [autoDifficulty, setAutoDifficulty] = useState(true);
 
+  const countdownHandler = () =>
+    optionsChangeHandler({ ...options, withCountdown: !options.withCountdown });
   const autoDifficultyHandler = () => {
-    changeHandler(
+    difficultyChangeHandler(
       autoDifficulty
         ? { ...difficulty, level: undefined }
-        : {
-            ...GameDifficulties[0],
-          },
+        : { ...GameDifficulties[0] },
     );
 
     setAutoDifficulty(!autoDifficulty);
   };
 
   const sliderChangeHandler = (id: string, val: number) => {
-    changeHandler({ ...difficulty, [id]: val });
+    difficultyChangeHandler({ ...difficulty, [id]: val });
   };
 
   const difficultyResetHandler = () =>
-    changeHandler({ ...GameDifficulties[0] });
+    difficultyChangeHandler({ ...GameDifficulties[0] });
 
   return (
     <div className="flex flex-col gap-4">
+      <Switch
+        data-cy="game-countdown-toggle"
+        isSelected={options.withCountdown}
+        onValueChange={countdownHandler}
+      >
+        Auto-play with countdown
+      </Switch>
+
       <Switch
         data-cy="game-auto-difficulty-toggle"
         isSelected={autoDifficulty}
