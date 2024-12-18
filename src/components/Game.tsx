@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import PlayStopTrigger from "./PlayStopTrigger";
 import GameResult, { GameResults } from "./GameResult";
-import GameOptions, { GameDifficulty } from "./GameOptions";
+import GameOptionsForm, { GameOptions } from "./GameOptionsForm";
 import LockPicker from "./LockPicker";
 import FpsCounter from "./FpsCounter";
 import compareRange from "../utils/arc-compare";
-import { GameDifficulties } from "./GameDifficulties";
+import { GameDifficulties, GameDifficulty } from "./GameDifficulties";
 
 type Props = {
   radius?: number;
@@ -22,11 +22,16 @@ export default function Game(props: Props) {
   const cursorOffset = useRef<number>(0);
 
   const [offset, setOffset] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<GameResults>("start");
+  const [cursorStartOffset, setCursorStartOffset] = useState(cursorStart);
+  const [options, setOptions] = useState<GameOptions>({
+    withCountdown: true,
+  });
   const [difficulty, setDifficulty] = useState<GameDifficulty>({
     ...GameDifficulties[0],
   });
+  const isGameStart = !isRunning && result === "start";
 
   const dataHandler = (
     _perfectOffset: number,
@@ -38,14 +43,30 @@ export default function Game(props: Props) {
     cursorOffset.current = _cursorOffset;
   };
 
+  const gameStartHandler = () => {
+    setCursorStartOffset(cursorStart - cursorSize / 2 - cursorOffset.current);
+    setOffset((300 + Math.random() * 160) % 360);
+    setResult("start");
+    setIsRunning(true);
+    if (difficulty.level !== undefined)
+      setDifficulty(
+        GameDifficulties[
+          Math.min(GameDifficulties.length - 1, difficulty.level + 1)
+        ],
+      );
+  };
+
   const toggleRunning = () => {
-    if (running && result === "start") {
+    if (isRunning && result === "start") {
       const range = (offset: number, size: number): [number, number] => {
         const start = offset % 360;
         const end = (offset + size) % 360;
         return [start, end];
       };
-      const cursorRange = range(cursorOffset.current, cursorSize);
+      const cursorRange = range(
+        cursorStartOffset + cursorOffset.current,
+        cursorSize,
+      );
       const perfectRange = range(perfectOffset.current, perfectSize.current);
       const okRange = range(offset, difficulty.size);
 
@@ -53,17 +74,10 @@ export default function Game(props: Props) {
       else if (compareRange(cursorRange, okRange)) setResult("ok");
       else setResult("fail");
 
-      setRunning(false);
-    } else if (!running && result !== "start") {
-      setOffset((300 + Math.random() * 160) % 360);
-      setResult("start");
-      if (difficulty.level !== undefined)
-        setDifficulty(
-          GameDifficulties[
-            Math.min(GameDifficulties.length - 1, difficulty.level + 1)
-          ],
-        );
-    } else setRunning(true);
+      setIsRunning(false);
+    } else if (!isRunning && result !== "start") {
+      if (!options.withCountdown) gameStartHandler();
+    } else setIsRunning(true);
   };
 
   return (
@@ -75,13 +89,15 @@ export default function Game(props: Props) {
           <LockPicker
             radius={radius}
             width={width}
-            isRunning={running}
-            isGameEnd={!running && result === "start"}
+            withCountdown={options.withCountdown}
+            isRunning={isRunning}
+            isGameStart={isGameStart}
             difficulty={difficulty}
             okOffset={offset}
-            cursorStart={cursorStart}
+            cursorStart={cursorStartOffset}
             cursorSize={cursorSize}
             dataHandler={dataHandler}
+            countdownHandler={gameStartHandler}
           />
 
           <PlayStopTrigger toggleHandler={toggleRunning} />
@@ -90,9 +106,11 @@ export default function Game(props: Props) {
       </div>
 
       <div className="col-span-2 xl:col-span-1 flex flex-col gap-4">
-        <GameOptions
+        <GameOptionsForm
+          options={options}
+          optionsChangeHandler={(options) => setOptions(options)}
           difficulty={difficulty}
-          changeHandler={(difficulty) => setDifficulty(difficulty)}
+          difficultyChangeHandler={(difficulty) => setDifficulty(difficulty)}
         />
       </div>
     </div>

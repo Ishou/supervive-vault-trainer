@@ -5,6 +5,8 @@ import { defineConfig } from "cypress";
 const registerCodeCoverageTasks = require("@cypress/code-coverage/task");
 
 export default defineConfig({
+  viewportWidth: 1920,
+  viewportHeight: 1080,
   component: {
     devServer: {
       framework: "react",
