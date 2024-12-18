@@ -1,4 +1,9 @@
-import { GameDifficulty } from "./GameOptions";
+export type GameDifficulty = {
+  level?: number;
+  speed: number;
+  size: number;
+  perfectMultiplier: number;
+};
 
 export const GameDifficulties: GameDifficulty[] = [
   {
