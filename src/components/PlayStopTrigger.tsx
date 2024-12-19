@@ -1,21 +1,22 @@
 import { useEffect } from "react";
 import { Button, Kbd } from "@nextui-org/react";
+import { useGameDispatch } from "./GameOptions/GameContext";
 
-export default function PlayStopTrigger(props: { toggleHandler: () => void }) {
-  const { toggleHandler } = props;
+export default function PlayStopTrigger() {
+  const gameDispatch = useGameDispatch();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code !== "KeyE") return;
       event.preventDefault();
 
-      toggleHandler();
+      gameDispatch({ type: "pressOrTap" });
     };
 
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [toggleHandler]);
+  }, [gameDispatch]);
 
   return (
     <div className="flex justify-center">
@@ -23,7 +24,7 @@ export default function PlayStopTrigger(props: { toggleHandler: () => void }) {
         data-cy="play-stop-trigger"
         color="primary"
         size="lg"
-        onTouchEnd={toggleHandler}
+        onTouchEnd={() => gameDispatch({ type: "pressOrTap" })}
       >
         Press <Kbd>E</Kbd> or Tap
       </Button>

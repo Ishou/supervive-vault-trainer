@@ -1,6 +1,6 @@
 describe("HomePage", () => {
   function verifyOptions(size: string, perfectMultiplier: string) {
-    cy.get("[data-cy=game-option-size] input").should("have.value", size);
+    cy.get("[data-cy=game-option-okSize] input").should("have.value", size);
     cy.get("[data-cy=game-option-perfectMultiplier] input").should(
       "have.value",
       perfectMultiplier,
@@ -91,7 +91,7 @@ describe("HomePage", () => {
 
     cy.get("[data-cy=lock-picker]").should("exist");
 
-    cy.get("[data-cy=game-auto-difficulty-toggle]").click();
+    cy.get("[data-cy=game-autoDifficulty-toggle]").click();
 
     // Level 1
     playSequence([0, 0]);
@@ -108,8 +108,8 @@ describe("HomePage", () => {
     playSequence([0, 0]);
     verifyOptions("70", "25");
 
-    cy.get("[data-cy=game-auto-difficulty-toggle]").click();
-    cy.get("[data-cy=game-auto-difficulty-toggle]").click();
+    cy.get("[data-cy=game-autoDifficulty-toggle]").click();
+    cy.get("[data-cy=game-autoDifficulty-toggle]").click();
 
     verifyOptions("140", "50");
   });
@@ -146,7 +146,7 @@ describe("HomePage", () => {
 
     cy.get("[data-cy=lock-picker]").should("exist");
 
-    cy.get("[data-cy=game-auto-difficulty-toggle]").click();
+    cy.get("[data-cy=game-autoDifficulty-toggle]").click();
     cy.get("[data-cy=game-option-speed][data-disabled=false]")
       .as("speedOption")
       .find("[data-slot=value]")
@@ -180,9 +180,34 @@ describe("HomePage", () => {
 
     cy.get("[data-cy=lock-picker]").should("exist");
 
-    playSequence([0], true);
+    playSequence([550], true);
     cy.tick(456);
 
     cy.get("[data-cy=game-countdown]").should("have.text", "0.5440.544");
+  });
+
+  it("stops when failing", () => {
+    cy.clock();
+    cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
+
+    playSequence([0], true);
+    cy.tick(456);
+
+    cy.get("[data-cy=game-countdown]").should("have.text", "");
+  });
+
+  it("resets difficulty on fail if activated", () => {
+    cy.clock();
+    cy.visit("/");
+
+    cy.get("[data-cy=lock-picker]").should("exist");
+
+    cy.get("[data-cy=game-stopOnFail-toggle]").click();
+    cy.get("[data-cy=game-resetDifficultyOnFail-toggle]").click();
+    playSequence([0], true);
+
+    verifyOptions("140", "50");
   });
 });

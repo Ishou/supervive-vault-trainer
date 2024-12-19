@@ -1,4 +1,5 @@
 import { Alert } from "@nextui-org/react";
+import { useGameState } from "./GameOptions/GameContext";
 
 type Color = "success" | "danger" | "secondary";
 type Model = {
@@ -32,9 +33,9 @@ const alertModels: Models = {
 
 export type GameResults = "start" | "perfect" | "ok" | "fail";
 
-export default function GameResult(props: { result: GameResults }) {
-  const { result } = props;
-  const model = alertModels[result];
+export default function GameResult() {
+  const { state } = useGameState();
+  const model = alertModels[state];
 
   return (
     <div className="min-h-24">

@@ -1,4 +1,5 @@
-import "./app/globals.css";
+import "@fontsource/geist-sans";
+import "./globals.css";
 import { createRoot } from "react-dom/client";
 import {
   Alert,
@@ -13,6 +14,11 @@ import {
 import { footer, header } from "framer-motion/m";
 import Game from "./components/Game";
 import { Suspense } from "react";
+import { GameOptionsProvider } from "./components/GameOptions/GameOptionsContext";
+import GameOptionsForm from "./components/GameOptions/GameOptionsForm";
+import GameResult from "./components/GameResult";
+import PlayStopTrigger from "./components/PlayStopTrigger";
+import FpsCounter from "./components/FpsCounter";
 
 const rootElement = document.querySelector("#root") as Element;
 
@@ -38,7 +44,25 @@ createRoot(rootElement).render(
         <Divider />
         <CardBody>
           <Suspense fallback={<p>Loading...</p>}>
-            <Game />
+            <GameOptionsProvider>
+              <div className="grid grid-cols-2 gap-8 mx-4" data-cy="game">
+                <div className="col-span-2 my-auto flex flex-col xl:col-span-1">
+                  <div className="flex flex-col justify-center">
+                    <GameResult />
+
+                    <Game />
+
+                    <PlayStopTrigger />
+
+                    <FpsCounter />
+                  </div>
+                </div>
+
+                <div className="col-span-2 xl:col-span-1 flex flex-col gap-4">
+                  <GameOptionsForm />
+                </div>
+              </div>
+            </GameOptionsProvider>
           </Suspense>
         </CardBody>
         <Divider />
