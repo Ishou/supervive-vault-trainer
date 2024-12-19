@@ -10,15 +10,15 @@ export default function FpsCounter() {
     fps: 0,
   });
 
+  if (frames.elapsedTime >= 1000)
+    setFrames({
+      count: 0,
+      elapsedTime: 0,
+      fps: frames.count * (1000 / frames.elapsedTime),
+    });
+
   useAnimationLoop((delta) => {
     setFrames((frames) => {
-      if (frames.elapsedTime + delta >= 1000)
-        return {
-          count: 0,
-          elapsedTime: 0,
-          fps: frames.count * (1000 / frames.elapsedTime),
-        };
-
       return {
         count: frames.count + 1,
         elapsedTime: frames.elapsedTime + delta,

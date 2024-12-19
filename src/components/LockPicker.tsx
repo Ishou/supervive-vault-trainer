@@ -1,8 +1,9 @@
 import Arc from "./Arc";
 import { useEffect, useState } from "react";
-import { GameDifficulty } from "./GameOptions";
 
 import { useAnimationLoop } from "./UseAnimationLoop";
+import CircleCountDown from "./CircleCountDown";
+import { GameDifficulty } from "./GameDifficulties";
 
 type Props = {
   radius: number;
@@ -11,13 +12,15 @@ type Props = {
   difficulty: GameDifficulty;
   cursorStart: number;
   cursorSize: number;
+  withCountdown: boolean;
   isRunning: boolean;
-  isGameEnd: boolean;
+  isGameStart: boolean;
   dataHandler: (
     perfectOffset: number,
     perfectSize: number,
     cursorOffset: number,
   ) => void;
+  countdownHandler: () => void;
 };
 
 export default function LockPicker(props: Props) {
@@ -28,32 +31,44 @@ export default function LockPicker(props: Props) {
     difficulty,
     cursorStart,
     cursorSize,
+    withCountdown,
     isRunning,
-    isGameEnd,
+    isGameStart,
     dataHandler,
+    countdownHandler,
   } = props;
 
-  const initialCursorOffset = cursorStart - cursorSize / 2;
   const perfectSize = (difficulty.size * difficulty.perfectMultiplier) / 100;
   const perfectOffset = okOffset + difficulty.size / 2 - perfectSize / 2;
 
-  const [cursorOffset, setCursorOffset] = useState(initialCursorOffset);
+  const [timer, setTimer] = useState(0);
+  const [cursorOffset, setCursorOffset] = useState(0);
+  const countdownTimer = 1000;
 
   dataHandler(perfectOffset, perfectSize, cursorOffset);
 
+  if (!withCountdown && timer) setTimer(0);
+
   useAnimationLoop((delta) => {
-    setCursorOffset((cursorOffset) =>
-      !isRunning
-        ? cursorOffset
-        : cursorOffset + delta * 0.36 * difficulty.speed,
-    );
+    if (isGameStart) {
+      setCursorOffset((cursorOffset) =>
+        !isRunning
+          ? cursorOffset
+          : cursorOffset + delta * 0.36 * difficulty.speed,
+      );
+    } else if (withCountdown) {
+      if (timer + delta >= countdownTimer) {
+        countdownHandler();
+        setTimer(0);
+      } else setTimer((timer) => timer + delta);
+    }
   });
 
   useEffect(() => {
-    if (isGameEnd) {
-      setCursorOffset(initialCursorOffset);
+    if (isGameStart) {
+      setCursorOffset(0);
     }
-  }, [isGameEnd, initialCursorOffset]);
+  }, [isGameStart]);
 
   return (
     <svg
@@ -64,6 +79,15 @@ export default function LockPicker(props: Props) {
       viewBox={`${-radius * 2} ${-radius * 2} ${radius * 4} ${radius * 4}`}
     >
       {/* Track */}
+      {!isRunning && !isGameStart && withCountdown ? (
+        <CircleCountDown
+          maxRadius={radius - width / 2}
+          totalTime={countdownTimer}
+          percent={timer / countdownTimer}
+        />
+      ) : (
+        <></>
+      )}
       <circle
         r={radius}
         className="stroke-black"
@@ -92,7 +116,7 @@ export default function LockPicker(props: Props) {
       <Arc
         data-cy="lock-picker-cursor"
         className="stroke-yellow-500"
-        offset={cursorOffset}
+        offset={cursorStart + cursorOffset}
         size={cursorSize}
         radius={radius}
         width={width}
