@@ -1,14 +1,23 @@
 import GameResult from "./GameResult";
+import { GameOptionsProvider } from "./GameOptions/GameOptionsContext";
 
 describe("<GameResult />", () => {
   it("renders start info", () => {
-    cy.mount(<GameResult result="start" />);
+    cy.mount(
+      <GameOptionsProvider gameStateOverride={{ state: "start" }}>
+        <GameResult />
+      </GameOptionsProvider>,
+    );
 
     cy.get("[role=alert]").should("have.text", "GL & HF!Try your best!");
   });
 
   it("renders perfect result", () => {
-    cy.mount(<GameResult result="perfect" />);
+    cy.mount(
+      <GameOptionsProvider gameStateOverride={{ state: "perfect" }}>
+        <GameResult />
+      </GameOptionsProvider>,
+    );
 
     cy.get("[role=alert]").should(
       "have.text",
@@ -17,7 +26,11 @@ describe("<GameResult />", () => {
   });
 
   it("renders ok result", () => {
-    cy.mount(<GameResult result="ok" />);
+    cy.mount(
+      <GameOptionsProvider gameStateOverride={{ state: "ok" }}>
+        <GameResult />
+      </GameOptionsProvider>,
+    );
 
     cy.get("[role=alert]").should(
       "have.text",
@@ -26,7 +39,11 @@ describe("<GameResult />", () => {
   });
 
   it("renders fail result", () => {
-    cy.mount(<GameResult result="fail" />);
+    cy.mount(
+      <GameOptionsProvider gameStateOverride={{ state: "fail" }}>
+        <GameResult />
+      </GameOptionsProvider>,
+    );
 
     cy.get("[role=alert]").should("have.text", "Fail!You spawned blue orbs.");
   });
